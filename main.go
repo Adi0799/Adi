@@ -12,12 +12,12 @@ func main() {
 
     router := gin.Default()
 
-    // Health check route
+ 
     router.GET("/test", func(c *gin.Context) {
         c.JSON(200, gin.H{"message": "Server is running"})
     })
 
-    // Define main routes
+    
     router.POST("/subscribe", handlers.Subscribe)
     router.POST("/notifications/send", handlers.SendNotification)
     router.POST("/unsubscribe", handlers.Unsubscribe)

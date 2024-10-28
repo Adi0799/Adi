@@ -1,4 +1,4 @@
-// handlers/notification.go
+
 
 package handlers
 
@@ -12,7 +12,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Subscribe allows users to subscribe to specific topics
+
 func Subscribe(c *gin.Context) {
 	var sub models.Subscription
 	if err := c.BindJSON(&sub); err != nil {
@@ -33,9 +33,9 @@ func Subscribe(c *gin.Context) {
 	c.JSON(200, gin.H{"message": "Subscription successful"})
 }
 
-// SendNotification sends a notification to all subscribers of a specific topic
+
 func SendNotification(c *gin.Context) {
-	// Define the expected structure for the JSON payload
+	
 	var payload struct {
 		Topic string `json:"topic"`
 		Event struct {
@@ -53,14 +53,14 @@ func SendNotification(c *gin.Context) {
 		} `json:"message"`
 	}
 
-	// Bind JSON payload to the struct
+
 	if err := c.BindJSON(&payload); err != nil {
 		log.Printf("JSON binding error: %v", err)
 		c.JSON(400, gin.H{"error": "Invalid input"})
 		return
 	}
 
-	// Simulate sending message to Kafka (or any notification system)
+	
 	writer := services.CreateKafkaWriter("localhost:9092", payload.Topic)
 	message := payload.Message.Title + ": " + payload.Message.Body
 	if err := services.SendMessage(writer, message); err != nil {
@@ -71,7 +71,7 @@ func SendNotification(c *gin.Context) {
 	c.JSON(200, gin.H{"message": "Notification sent"})
 }
 
-// Unsubscribe allows users to unsubscribe from specific topics
+
 func Unsubscribe(c *gin.Context) {
 	var payload struct {
 		UserID string   `json:"user_id"`
@@ -96,7 +96,7 @@ func Unsubscribe(c *gin.Context) {
 	c.JSON(200, gin.H{"message": "Unsubscribed successfully"})
 }
 
-// GetUserSubscriptions fetches all topics a user is subscribed to
+
 func GetUserSubscriptions(c *gin.Context) {
 	userID := c.Param("user_id")
 	query := `SELECT topics, email, sms, push_notifications FROM subscriptions WHERE user_id = ?`
